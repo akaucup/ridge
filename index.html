@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./assets/style/main.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/img/icon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/img/icon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/img/icon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/img/icon/site.webmanifest" />
+    <title>RIDGE - Random ID Generator</title>
+  </head>
+  <body>
+    <div
+      id="myModal"
+      class="fixed z-[9999999] hidden h-screen w-full items-center justify-center px-5 backdrop-blur-md"
+    >
+      <div class="text-slate-400">
+        <div
+          class="relative max-h-full w-full max-w-2xl rounded-lg bg-white shadow dark:bg-gray-700"
+        >
+          <!-- Modal header -->
+          <div
+            class="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-600"
+          >
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                ようこそ！RIDGEへ
+              </h3>
+            </div>
+            <div class="flex items-center">
+              <button
+                id="closeBtn"
+                class="relative dark:text-gray-800 dark:hover:text-rose-700"
+              >
+                <svg
+                  class="h-7 w-7"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+          </div>
+          <!-- Modal body -->
+          <div class="space-y-6 p-6">
+            <p
+              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+            >
+              Welcome to RIDGE - <span class="font-bold">R</span>andom
+              <span class="font-bold">ID</span>
+              <span class="font-bold">GE</span>nerator
+            </p>
+            <p
+              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+            >
+              Here you can generate data such as name, username, email,
+              password, and phone number<em>
+                (Indonesian format only for now)</em
+              >. Please note that our data generator generates fake data, so if
+              you find it matching with real information, it is purely
+              coincidental.
+            </p>
+            <p
+              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+            >
+              Thank you for using our services. Do you have any thoughts about
+              our service? Feel free to send us an email.
+            </p>
+          </div>
+          <!-- Modal footer -->
+          <div
+            class="flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600"
+          >
+            <button
+              id="closeAccept"
+              type="button"
+              class="bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-lg px-5 py-2.5 text-center text-sm font-medium text-slate-800 ring-1 ring-stone-950 focus:outline-none focus:ring-4 dark:text-white dark:ring-slate-50"
+            >
+              Okay, Thanks for noticing.
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- overlay -->
+    <div
+      id="overlayBg"
+      onclick="disclaimerOpen(false)"
+      class="fixed top-0 z-[999] hidden h-screen w-full items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
+    >
+      <!-- box -->
+      <div
+        id="popupDisclaimer"
+        class="relative md:w-[550px] w-[400px] -translate-y-full transform rounded-md bg-slate-100 opacity-0 shadow-lg transition-all duration-300 dark:bg-slate-600 dark:text-gray-400"
+      >
+        <!-- header -->
+        <div
+          class="flex justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-500"
+        >
+          <div class="text-2xl dark:text-slate-100">Disclaimer</div>
+          <div
+            onclick="disclaimerOpen(false)"
+            class="absolute -right-4 -top-3 hover:text-rose-700 dark:text-slate-200 dark:hover:text-rose-700"
+          >
+            <button id="closeDisclaimer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-10 w-10"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <!-- body -->
+        <div
+          class="h-[400px] space-y-4 overflow-y-auto overscroll-none px-4 py-2"
+        >
+          <p>
+            The data generated by RIDGE (Random ID Generator) is automatically
+            provided as dummy data to fulfill your needs. We strive to produce
+            diverse and relevant data; however, please note that the generated
+            data is not real data and cannot be considered an accurate
+            representation of actual entities or individuals.
+          </p>
+          <p>
+            The data generated by RIDGE is intended for simulation, testing,
+            development, and other related purposes. We cannot guarantee the
+            accuracy, completeness, or suitability of the generated data for
+            your specific needs. If you require more comprehensive, up-to-date,
+            or specific data, it is recommended to use valid and reliable data
+            sources.
+          </p>
+          <p>
+            We are not responsible for the use of the dummy data generated by
+            RIDGE, nor for any consequences or losses that may arise from its
+            use. You are solely responsible for the use and interpretation of
+            the generated data.
+          </p>
+          <p>
+            We endeavor to maintain the confidentiality and privacy of users by
+            employing appropriate data processing methods. However, we cannot
+            guarantee complete security against all security threats and data
+            misuse.
+          </p>
+          <p>
+            By using the RIDGE service, you are deemed to have read, understood,
+            and agreed to the terms stated in this disclaimer. If you do not
+            agree with these terms, it is recommended not to use our service.
+          </p>
+        </div>
+        <div
+          class="mt-2 flex justify-end rounded-b-md border-t border-gray-300 px-5 py-3 dark:border-gray-500"
+        >
+          <button
+            onclick="disclaimerOpen(false)"
+            class="rounded-md bg-slate-300 px-4 py-3 ring-1 ring-slate-600 dark:text-slate-600"
+          >
+            Okay, Dude!
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="overlayBg1"
+      onclick="privacyOpen(false)"
+      class="fixed top-0 z-[999] hidden h-screen w-full items-center justify-center overscroll-none bg-black bg-opacity-30 backdrop-blur-sm"
+    >
+      <!-- privacy -->
+      <div
+        id="popupPrivacy"
+        class="relative w-[400px] -translate-y-full transform rounded-md bg-slate-100 opacity-0 shadow-lg transition-all duration-300 dark:bg-slate-600 dark:text-gray-400 md:w-[550px]"
+      >
+        <!-- header -->
+        <div
+          class="mb-3 flex justify-between border-b border-gray-300 px-4 py-3 dark:border-gray-500"
+        >
+          <div class="text-2xl dark:text-slate-200">Privacy Policy</div>
+          <div
+            onclick="privacyOpen(false)"
+            class="absolute -right-4 -top-3 hover:text-rose-700 dark:text-slate-200 dark:hover:text-rose-700"
+          >
+            <button id="closeDisclaimer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-10 w-10"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <!-- body -->
+        <div class="h-[400px] space-y-4 overflow-y-auto px-4 py-2">
+          <p>
+            We at RIDGE value your privacy and are committed to protecting the
+            personal information you provide to us when using this website. This
+            page explains how we collect, use, and protect your personal
+            information. We encourage you to carefully read this privacy policy
+            before using our services.
+          </p>
+          <h2 class="text-xl font-semibold">Information We Collect</h2>
+          <ul>
+            <li>
+              <strong>Dummy Data:</strong> When you use the dummy data
+              generation service on RIDGE, we may collect the information you
+              input, such as name, email address, date of birth, or other
+              relevant information for the purpose of generating dummy data.
+            </li>
+            <li>
+              <strong>Usage Information:</strong> We may also collect
+              information about how you use our website, including log data, IP
+              address, device type, browser used, date and time of access, and
+              the pages you visit.
+            </li>
+          </ul>
+          <h2 class="text-xl font-semibold">Use of Information</h2>
+          <ul>
+            <li>
+              <strong>Dummy Data:</strong> The personal information you provide
+              when using the dummy data generation service will be used
+              internally to generate dummy data according to your specified
+              preferences.
+            </li>
+            <li>
+              <strong>Analytics:</strong> We may use the collected information
+              for analysis and improvement of our services, including usage
+              analysis, statistics, and usage trends.
+            </li>
+          </ul>
+          <h2 class="text-xl font-semibold">Third-Party Privacy Policy</h2>
+          <ul>
+            <li>
+              <strong>External Links:</strong> The RIDGE website may provide
+              external links to third-party websites. We are not responsible for
+              the content or privacy policies of those websites. Please review
+              the privacy policies of each visited website.
+            </li>
+            <li>
+              <strong>Use of Cookies:</strong> We may use cookies and similar
+              tracking technologies to enhance the user experience and collect
+              necessary information to provide our services. You can manage your
+              cookie preferences through your browser settings.
+            </li>
+          </ul>
+          <p>
+            This Privacy Policy may change from time to time in accordance with
+            technological advancements and our services. Significant changes
+            will be notified through announcements on the website or other
+            appropriate methods.
+          </p>
+          <p>
+            RIDGE does not store generated data or user data accessed through
+            the RIDGE website. We are committed to maintaining the
+            confidentiality of your personal information.
+          </p>
+          <p>
+            By using the RIDGE website, you agree to the collection and use of
+            your personal information as outlined in this Privacy Policy. If you
+            do not agree to these terms, please refrain from using this website.
+          </p>
+          <p>
+            If you have any further questions regarding our Privacy Policy,
+            please feel free to contact us through the provided contact
+            information on the website.
+          </p>
+        </div>
+        <div
+          class="mt-3 flex justify-end rounded-b-md border-t border-gray-300 px-5 py-3 dark:border-gray-500"
+        >
+          <button
+            onclick="privacyOpen(false)"
+            class="rounded-md bg-slate-300 px-4 py-3 ring-1 ring-slate-600 dark:text-slate-600"
+          >
+            Okay, Dude!
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header start -->
+    <div
+      id="topHeader"
+      class="hidden w-full bg-slate-300 transition-colors duration-700 dark:bg-slate-700 dark:text-slate-400 md:block"
+    >
+      <div
+        class="container mx-auto flex items-center justify-between px-3 py-0.5 text-sm"
+      >
+        <div class="self-start">
+          <div>Hello visitor!</div>
+        </div>
+        <div class="self-center">
+          <ul class="flex">
+            <li class="pl-2">
+              <button onclick="disclaimerOpen(true)">Disclaimer</button><span> |</span>
+            </li>
+            <li class="pl-2">
+              <button onclick="privacyOpen(true)">Privacy</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <header
+      class="absolute left-0 top-0 z-10 flex w-full items-center bg-transparent py-2 md:top-6"
+    >
+      <div class="container mx-auto">
+        <div class="relative flex items-center justify-between pl-3 pr-1">
+          <!-- logo -->
+          <div class="w-4/5 text-6xl font-extrabold lg:w-1/6">
+            <span
+              class="bg-gradient-to-r from-pink to-violet-500 bg-clip-text text-transparent"
+              ><a href="#">RIDGE</a></span
+            >
+          </div>
+          <!-- right -->
+          <div
+            class="flex w-1/5 items-center justify-between px-3 text-slate-400 lg:w-5/6"
+          >
+            <button id="hamburger" class="absolute right-4 block lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-8 w-8"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 5.25zm0 4.5A.75.75 0 013.75 9h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 9.75zm0 4.5a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75zm0 4.5a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="hidden h-8 w-8"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <div
+              id="navMenu"
+              class="absolute right-4 top-full hidden max-w-[250px] rounded-lg bg-slate-300 py-4 text-slate-950 shadow-lg dark:bg-slate-800 dark:text-slate-200 dark:shadow-slate-700 lg:static lg:block lg:max-w-full lg:rounded-none lg:bg-transparent lg:shadow-none lg:dark:bg-transparent"
+            >
+              <div class="">
+                <div class="block lg:flex">
+                  <div class="group px-3 py-3">
+                    <a href="#">Home</a>
+                  </div>
+                  <div class="group px-3 py-3">
+                    <a href="#">About</a>
+                  </div>
+                  <div class="group px-3 py-3">
+                    <a href="#">Provider List</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pr-0">
+              <button
+                id="theme-toggle"
+                type="button"
+                class="rounded-lg p-2 text-sm text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+              >
+                <svg
+                  id="theme-toggle-dark-icon"
+                  class="hidden h-7 w-7 "
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                  ></path>
+                </svg>
+                <svg
+                  id="theme-toggle-light-icon"
+                  class="hidden h-7 w-7"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Header end -->
+
+    <!-- content Start -->
+    <section
+      class="pb-10 pt-32 transition-colors duration-700 dark:bg-slate-800 lg:pt-32"
+    >
+      <div class="container mx-auto">
+        <!-- <h1 class="w-full text-center font-sans text-2xl font-semibold">
+          RIDGE
+        </h1> -->
+        <div class="flex flex-wrap">
+          <!-- Button start -->
+          <div class="w-full self-start px-4 py-2 lg:w-1/4">
+            <h1 class="py-1 font-semibold dark:text-slate-300">
+              Action Button
+            </h1>
+            <div class="flex w-full flex-wrap gap-1 pb-1">
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnGenerate"
+              >
+                Generate
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyAll"
+              >
+                Copy Result
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnClearHistory"
+              >
+                Delete History
+              </button>
+            </div>
+            <h1 class="py-1 font-semibold dark:text-slate-300">Data to Copy</h1>
+            <div
+              class="grid grid-flow-row grid-cols-2 gap-1 pb-1 md:grid-flow-row md:grid-cols-5 lg:flex lg:flex-wrap"
+            >
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyFName"
+              >
+                Firstname
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyLName"
+              >
+                Lastname
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyUname"
+              >
+                Username
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyEmail"
+              >
+                Email
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyPassword"
+              >
+                Password
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyPhone"
+              >
+                Phone
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyDate"
+              >
+                Date
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyMonth"
+              >
+                Month
+              </button>
+              <button
+                type="button"
+                class="flex-auto rounded-md bg-teal-600 px-3 py-2 text-teal"
+                id="btnCopyYear"
+              >
+                Year
+              </button>
+            </div>
+          </div>
+          <!-- Button end -->
+          <!-- User Set start -->
+          <div class="w-full lg:w-3/4">
+            <div class="w-full self-end px-4 pb-2 pt-1">
+              <h1 class="py-1 font-semibold dark:text-slate-300">
+                Set your own preferences
+              </h1>
+              <div class="container flex flex-wrap gap-1">
+                <textarea
+                  id="inputNameList"
+                  class="w-full resize-none rounded-sm bg-slate-300 p-1 placeholder:pl-1 placeholder:text-slate-500 dark:text-slate-800"
+                  placeholder="Input your own name list (separated by line)"
+                  name="inputNameList"
+                  rows="4"
+                ></textarea>
+                <div class="container grid gap-1 md:flex">
+                  <input
+                    type="number"
+                    id="providerCode"
+                    class="order-1 rounded-sm bg-slate-300 p-1 placeholder:pl-1 placeholder:text-slate-500 dark:text-slate-800 md:w-1/4"
+                    placeholder="Provider Code"
+                    aria-label="Provider Code"
+                    maxlength="3"
+                  />
+                  <input
+                    type="text"
+                    id="inputPassword"
+                    class="order-2 rounded-sm bg-slate-300 p-1 placeholder:pl-1 placeholder:text-slate-500 dark:text-slate-800 md:w-1/4"
+                    placeholder="Password"
+                    aria-label="Password"
+                  />
+                  <input
+                    type="date"
+                    class="order-4 rounded-sm bg-slate-300 p-1 placeholder:pl-1 placeholder:text-slate-500 dark:text-slate-800 md:w-1/4"
+                  />
+                  <select
+                    id="selectedDomain"
+                    class="order-3 rounded-sm bg-slate-300 p-1 placeholder:pl-1 placeholder:text-slate-500 dark:text-slate-800 md:w-1/4"
+                    aria-label="Default selected gmail"
+                  >
+                    <option value="@gmail.com">Gmail</option>
+                    <option value="@outlook.com">Outlook</option>
+                    <option value="@hotmail.com">Hotmail</option>
+                    <option value="@yahoo.com">Yahoo</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- User Set end -->
+            <!-- Result start -->
+            <div class="w-full self-end px-4 pb-2 pt-1">
+              <h1 class="py-1 font-semibold dark:text-slate-300">Result</h1>
+              <div class="container flex flex-wrap gap-1">
+                <textarea
+                  id="resultData"
+                  class="no-scrollbar w-full resize-none rounded-sm bg-slate-300 p-1 placeholder:pl-1 placeholder:text-slate-500 dark:text-slate-800"
+                  readonly
+                  placeholder="Result will be shown here"
+                  rows="1"
+                ></textarea>
+              </div>
+            </div>
+            <!-- Result end -->
+            <!-- table start -->
+            <div class="w-full px-4 pb-2 pt-1">
+              <div
+                class="container flex items-center justify-between dark:text-slate-300"
+              >
+                <h6 class="py-1 font-semibold">Generate history</h6>
+                <span class="">
+                  You have <span class="underline" id="dataCount">0</span> Data
+                </span>
+              </div>
+              <div
+                class="h-80 overflow-auto rounded-md bg-slate-300 shadow dark:bg-slate-400"
+              >
+                <table class="w-full" maxrows="10" id="outputTable">
+                  <thead
+                    class="sticky top-0 border-b-2 border-slate-600 bg-slate-700 text-slate-200"
+                  >
+                    <tr>
+                      <th
+                        class="p-3 text-left text-sm font-semibold tracking-wide"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="p-3 text-left text-sm font-semibold tracking-wide"
+                      >
+                        Username
+                      </th>
+                      <th
+                        class="w-20 p-3 text-left text-sm font-semibold tracking-wide"
+                      >
+                        DoB
+                      </th>
+                      <th
+                        class="p-3 text-left text-sm font-semibold tracking-wide"
+                      >
+                        Email
+                      </th>
+                      <th
+                        class="w-20 p-3 text-left text-sm font-semibold tracking-wide"
+                      >
+                        Phone
+                      </th>
+                      <th
+                        class="w-20 p-3 text-left text-sm font-semibold tracking-wide"
+                      >
+                        Password
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="divide-y divide-gray-100"
+                    id="dataTable"
+                  ></tbody>
+                </table>
+              </div>
+              <div class="pt-4">
+                <button
+                  class="rounded-md bg-slate-400 px-5 py-2 text-slate-900"
+                  onclick="exportToCsv()"
+                >
+                  Export to CSV
+                </button>
+                <button
+                  class="rounded-md bg-slate-400 px-5 py-2 text-slate-900"
+                  onclick="exportToJson()"
+                >
+                  Export to Json
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- table end -->
+        </div>
+      </div>
+    </section>
+    <!-- content end -->
+    <!-- footer start -->
+    <footer class="bg-slate-700 pt-10 text-slate-300">
+      <div class="container mx-auto w-full">
+        <div class="flex flex-wrap">
+          <div class="mb-12 w-full px-4 lg:w-1/3">
+            <h2 class="text-4xl font-extrabold text-slate-300">RIDGE</h2>
+            <p class="pb-5 pt-2 text-slate-300">
+              <span class="font-bold">R</span>andom
+              <span class="font-bold">ID</span>
+              <span class="font-bold">GE</span>nerator. We are a service
+              provider for generating dummy data to meet your needs. We assist
+              you in creating dummy data that can be used for testing,
+              development, or other purposes. Please note that the amount of
+              data we generate is currently limited, but we are continuously
+              working to expand it. Any resemblance to real data is purely
+              coincidental. Thank you for using our service!
+            </p>
+            <div class="pb-5">
+              <h3 class="pb-2 text-2xl font-medium text-slate-300">
+                Our Social
+              </h3>
+              <a href="https://wa.me/message/64H327QBPN5CD1" target="_blank">
+                <i class="fa-brands fa-square-facebook fa-2xl"></i>
+              </a>
+              <a href="https://wa.me/message/64H327QBPN5CD1" target="_blank">
+                <i class="fa-brands fa-square-whatsapp fa-2xl"></i>
+              </a>
+              <a href="https://wa.me/message/64H327QBPN5CD1" target="_blank">
+                <i class="fa-brands fa-square-instagram fa-2xl"></i>
+              </a>
+            </div>
+          </div>
+          <div class="mb-12 w-full px-4 lg:w-1/3">
+            <form id="messageForm" action="">
+              <h3 class="pb-2 text-2xl font-medium text-slate-300">
+                Get in Touch
+              </h3>
+              <div class="grid w-full gap-3">
+                <input
+                  class="rounded-md bg-slate-200 p-2 text-slate-900 placeholder:pl-1"
+                  type="text"
+                  placeholder="Fullname"
+                />
+                <input
+                  class="rounded-md bg-slate-200 p-2 text-slate-900 placeholder:pl-1"
+                  type="email"
+                  placeholder="Email"
+                />
+                <textarea
+                  class="resize-none rounded-md bg-slate-200 p-2 text-slate-900 placeholder:pl-1"
+                  type="text"
+                  placeholder="Your message for us"
+                  rows="3"
+                ></textarea>
+                <button data-sitekey="6LdElIUcAAAAAEyHHSI5KKV7vUEiViLt80GbT2te"  data-callback='onSubmit' data-action='submit'
+                  class="g-recaptcha items-center rounded-full bg-slate-600 px-8 py-3 font-semibold text-slate-300 transition duration-500 hover:opacity-80 hover:shadow-lg md:w-1/2"
+                >
+                  Send <i class="fa-sharp fa-solid fa-paper-plane pl-2"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="mb-12 w-full px-4 lg:w-1/3">
+            <div class="pb-5">
+              <h3 class="pb-2 text-2xl font-medium text-slate-300">
+                Visit Our Store
+              </h3>
+              <a href="https://p-store.net/adverFI" target="_blank">
+                <i class="fa-solid fa-cart-shopping fa-xl"></i>
+              </a>
+            </div>
+            <div class="grid gap-4 pb-5">
+              <h3 class="text-2xl font-medium text-slate-300">Our Contact</h3>
+              <a href="mailto:example@example.com" target="_blank">
+                <i class="fa-solid fa-envelope fa-xl pr-2"></i
+                >example@example.com
+              </a>
+              <a href="https://wa.me/message/64H327QBPN5CD1" target="_blank">
+                <i class="fa-solid fa-phone fa-xl pr-2"></i>0851 5602 5345
+              </a>
+            </div>
+            <div class="pb-5">
+              <h3 class="pb-2 text-2xl font-medium text-slate-300">
+                Quick Links
+              </h3>
+              <ul>
+                <li><button  onclick="disclaimerOpen(true)">
+                  Disclaimer
+                </button></li>
+                <li><button onclick="privacyOpen(true)">
+                  Privacy and Policy
+                  </button></li>
+              </ul>
+              
+              
+            </div>
+          </div>
+        </div>
+        <div class="px-4 pb-6 text-sm">
+          Copyright © 2021 - <span id="year"></span> RIDGE by adverFI. All
+          rights reserved
+        </div>
+      </div>
+    </footer>
+    <!-- footer end -->
+    <!-- scripting start -->
+    <!-- <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.1/dist/cdn.min.js"
+    ></script> -->
+    <script>
+      import("./assets/script/global.js")
+        .then((module) => {})
+        .catch((error) => {
+          console.error(error);
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script type="module" src="assets/script/navigation.js"></script>
+    <script src="assets/script/export.js"></script>
+    <script src="assets/script/darkmode.js"></script>
+    <script src="assets/script/popup.js"></script>
+    <!-- scripting end -->
+  </body>
+</html>
